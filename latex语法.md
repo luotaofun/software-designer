@@ -54,6 +54,46 @@ $$
 
 
 
+## 例题：判断字长为16位的整数 A，第四位（从右向左数）是否全为零？
+
+*   **背景知识**：16进制数 `F` 转换为二进制是 `1111`。位操作通常从右向左计数，最低位为第0位。
+*   **分析**：我们需要判断 A 的第4位（从右数，假设从0开始编号，即第3位）是否为0。一个常用的方法是使用逻辑与操作符，将 A 与一个只有目标位为1，其余位为0的掩码进行逻辑与操作。如果结果为0，则说明 A 的目标位为0。
+* **选项分析**：
+  $$
+  \begin{array}{|c|l|l|} 
+  \hline
+  \textbf{选项} & \textbf{表达式} & \textbf{分析与结论} \\ 
+  \hline
+  \text{A} & A \& \text{0x000F} == 0 & 
+  \begin{array}{l} 
+  \text{检查 A 的最低四位 (Mask: } (000F)_{16} = (1111)_2 \text{) 是否全为 0。} \\ 
+  \text{若低四位为 } (0000)_2 \text{, 则 } (0000)_2 \& (1111)_2 = (0000)_2 \rightarrow 0 \text{。} \\ 
+  \textbf{结论：正确} 
+  \end{array} \\ 
+  \hline
+  \text{B} & A \| \text{0x000F} == \text{0x000F} & 
+  \begin{array}{l} 
+  \text{无论 A 的低四位是 } (0000)_2 \text{ 还是 } (0010)_2 \text{, 与 } (1111)_2 \text{ 或运算结果均为 } (1111)_2 \text{。} \\ 
+  \text{无法判断低四位是否全为 0。} \\ 
+  \textbf{结论：错误} 
+  \end{array} \\ 
+  \hline
+  \text{C} & A \oplus \text{0x000F} == 0 & 
+  \begin{array}{l} 
+  \text{异或 (XOR) 操作。仅当 A 的低四位为 } (1111)_2 \text{ 时, 结果才为 0。} \\ 
+  \text{此为判断低四位是否全为 1。} \\ 
+  \textbf{结论：错误} 
+  \end{array} \\ 
+  \hline
+  \text{D} & A \& \text{0x000F} == \text{0x000F} & 
+  \begin{array}{l} 
+  \text{与 (AND) 操作。仅当 A 的低四位为 } (1111)_2 \text{ 时, 结果才为 } (1111)_2 \text{。} \\ 
+  \text{此为判断低四位是否全为 1。} \\ 
+  \textbf{结论：错误} 
+  \end{array} \\ 
+  \hline
+  \end{array}
+  $$
 
 ## 箭头
 
