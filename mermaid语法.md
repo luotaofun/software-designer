@@ -40,6 +40,86 @@
 ### 示例：
 
 ```mermaid
+         graph TD
+             subgraph A ["计算机硬件系统<br/>Computer Hardware System"]
+                 direction LR
+                 H("主机<br/>Host") --> M["主存 (内存)<br/>Main Memory"]
+                 H --> CPU
+                 
+                 P("外设<br/>Peripheral Devices") --> I["输入设备<br/>(键盘, 鼠标)"]
+                 P --> O["输出设备<br/>Output Devices<br/>(显示器)"]
+                 P --> E["外存 (辅存)<br/>Secondary Storage<br/>(硬盘, U盘)"]
+             end
+         
+             CPU <--> B("总线<br/>Bus")
+             M <--> B
+             P <--> B
+         
+             subgraph CPU ["Central Processing Unit"]
+                 direction LR
+                 ARU("运算器<br/>Arithmetic Unit")
+                 CU("控制器<br/>Control Unit")
+             end
+             
+             %% 样式定义
+             style H fill:#FFFACD,stroke:#BDB76B
+             style P fill:#F0F8FF,stroke:#B0C4DE
+             style CPU fill:#FFDAB9,stroke:#A0522D
+             style M fill:#E6E6FA,stroke:#9370DB
+             style I fill:#D4EDDA,stroke:#28A745
+             style O fill:#D4EDDA,stroke:#28A745
+             style E fill:#D4EDDA,stroke:#28A745
+             
+             
+```
+
+```mermaid
+graph TD
+    CPU["<strong>中央处理器<br/>Central Processing Unit (CPU)</strong>"] --> ARU["运算器<br/>Arithmetic Unit<br/>工厂流水线的加工区"]
+    CPU --> CU["控制器<br/>Control Unit<br/>工厂流水线的控制中心"]
+
+    subgraph ARU_COMP ["运算器内部<br/>Arithmetic Unit Components"]
+        ALU["算术逻辑单元<br/>Arithmetic Logic Unit (ALU)<br/>加工机器，执行具体操作"]
+        AC["累加寄存器<br/>Accumulator Register (AC)<br/>临时工作台，存放加工零件"]
+        DR["数据缓冲寄存器<br/>Data Register (DR)<br/>传送带，传输加工材料"]
+        PSW["程序状态字寄存器<br/>Program Status Word (PSW)<br/>质量检查员，记录加工状态"]
+    end
+    
+    subgraph CU_COMP ["控制器内部<br/>Control Unit Components"]
+        PC["程序计数器<br/>Program Counter (PC)<br/>传送带控制器，决定下个工件位置"]
+        IR["指令寄存器<br/>Instruction Register (IR)<br/>当前加工的工件"]
+        ID["指令译码器<br/>Instruction Decoder (ID)<br/>操作说明书，翻译加工步骤"]
+        TIMING["时序控制电路<br/>Timing and Control Unit<br/>生产调度，协调工作流程"]
+    end
+
+    ARU --> ARU_COMP
+    CU --> CU_COMP
+    
+    PSW -.->|"分类存在争议:<br/>因为它既存储运算状态（属于运算器范畴），也存储控制标志（可用于控制器决策）"| CU
+
+    %% 样式定义
+    style CPU fill:#FFDAB9,stroke:#A0522D,stroke-width:2px
+    style ARU fill:#ADD8E6,stroke:#4682B4
+    style CU fill:#ADD8E6,stroke:#4682B4
+    style ARU_COMP fill:#F0F8FF,stroke:#B0C4DE
+    style CU_COMP fill:#F0F8FF,stroke:#B0C4DE
+```
+
+```mermaid
+flowchart TD
+    A("开始<br/>CPU执行程序的过程本质上是不断重复“取指令 -> 分析指令 -> 执行指令”的循环<br/>就像厨师做菜，不断重复“看菜谱 -> 理解步骤 -> 执行烹饪”的过程") --> B{"PC 提供下一条指令地址<br/>就像厨师看菜谱的页码指示器"}
+    B --> C["通过地址总线<br/>从主存中取出指令<br/>就像厨师翻到指定的菜谱页"]
+    C --> D{"指令存入 IR<br/>就像厨师阅读当前的菜谱内容"}
+    D --> E["PC 指向下一条指令 (PC++)<br/>就像厨师标记下一道菜的页码"]
+    E --> F{"ID 译码分析 IR 中的指令<br/>就像厨师翻译菜谱步骤"}
+    F --> G["根据指令<br/>操作ALU、寄存器等<br/>完成计算或数据转移<br/>就像厨师执行具体的烹饪操作"]
+    G --> H{"循环或结束<br/>就像厨师完成一道菜后决定是否继续下一道"}
+    H --> B
+```
+
+
+
+```mermaid
 graph TD
     T_def["<strong>事务 (Transaction)</strong><br/>访问并可能操作各种数据项的一组数据库操作序列"] --> A
     A["数据库事务特性 (ACID)"] --> B(原子性 Atomicity)
