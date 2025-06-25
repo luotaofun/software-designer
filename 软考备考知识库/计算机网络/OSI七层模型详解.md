@@ -97,14 +97,15 @@ $$
 ## 📡 数据传输流程可视化
 
 ```mermaid
-sequenceDiagram
-    participant App as 应用层
-    participant Pre as 表示层
-    participant Ses as 会话层
-    participant Tra as 传输层
-    participant Net as 网络层
-    participant "Link" as 数据链路层
-    participant Phy as 物理层
+sequenceDiagram 
+	title "物(Hub)数(Switch)网(Router)传会表应"
+    participant App as 🖥️应用层|用户接口、网络服务 
+    participant Pre as 🔄表示层|格式转换、加密压缩 
+    participant Ses as 🔗会话层|会话管理、同步控制 
+    participant Tra as 📦传输层|端到端传输、流控 
+    participant Net as 🗺️网络层|路由寻址、包转发 
+    participant "Link" as 🔗 数据链路层 | 帧传输、错误检测 
+    participant Phy as ⚡物理层|信号传输、接口定义 
 
     Note over App,Phy: 数据封装过程 (发送方)
     App->>Pre: 数据 + AH
@@ -125,19 +126,34 @@ sequenceDiagram
     App->>App: 提取原始数据
 ```
 
-### 🔍 数据包结构演进
+### 🔍 头部缩写详解
+
+$$
+\begin{align}
+&\textbf{OSI模型各层头部标识完整说明：} \\\\
+&\text{AH} = \text{Application Header（应用层头部）} \\
+&\text{PH} = \text{Presentation Header（表示层头部）} \\
+&\text{SH} = \text{Session Header（会话层头部）} \\
+&\text{TH} = \text{Transport Header（传输层头部）} \\
+&\text{NH} = \text{Network Header（网络层头部）} \\
+&\text{DH} = \text{Data Header（数据帧头部）} \\
+&\text{DT} = \text{Data Trailer（数据帧尾部）}
+\end{align}
+$$
+
+### 📦 数据包结构演进
 
 $$
 \begin{align}
 &\textbf{封装过程数学表示：} \\\\
 &\text{原始数据：} D \\
-&\text{应用层：} D + H_7 \\
-&\text{表示层：} D + H_7 + H_6 \\
-&\text{会话层：} D + H_7 + H_6 + H_5 \\
-&\text{传输层：} D + H_7 + H_6 + H_5 + H_4 \\
-&\text{网络层：} D + H_7 + H_6 + H_5 + H_4 + H_3 \\
-&\text{数据链路层：} H_2 + D + H_7 + H_6 + H_5 + H_4 + H_3 + T_2 \\
-&\text{物理层：} \text{Binary}(H_2 + D + \sum_{i=3}^{7} H_i + T_2)
+&\text{应用层：} D + AH \\
+&\text{表示层：} D + AH + PH \\
+&\text{会话层：} D + AH + PH + SH \\
+&\text{传输层：} D + AH + PH + SH + TH \\
+&\text{网络层：} D + AH + PH + SH + TH + NH \\
+&\text{数据链路层：} DH + D + AH + PH + SH + TH + NH + DT \\
+&\text{物理层：} \text{Binary}(DH + D + \sum_{\text{Headers}} + DT)
 \end{align}
 $$
 
