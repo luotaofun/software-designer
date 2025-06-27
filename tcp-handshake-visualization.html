@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP三次握手和四次挥手可视化 | TCP Handshake & Termination Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        .tcp-intro {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .tcp-intro h3 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+        }
+        .diagram-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #fafbfc;
+            border-radius: 8px;
+            border: 1px solid #e1e8ed;
+        }
+        .step-explanation {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .step-explanation h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .signal-info {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin: 0 3px;
+        }
+        .seq-info {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin: 0 3px;
+        }
+        .state-info {
+            display: inline-block;
+            background: #6f42c1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin: 0 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TCP三次握手和四次挥手可视化<br><small>TCP Three-Way Handshake & Four-Way Termination Visualization</small></h1>
+        
+        <div class="tcp-intro">
+            <h3>🔗 TCP协议特性 (TCP Protocol Characteristics)</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <strong>面向连接 (Connection-Oriented)</strong><br>
+                    需要先建立连接才能传输数据，如同打电话需要对方接听
+                </div>
+                <div class="feature-item">
+                    <strong>可靠传输 (Reliable Transmission)</strong><br>
+                    保证数据包按顺序到达，无丢失、无重复、无错误
+                </div>
+                <div class="feature-item">
+                    <strong>一对一通信 (Point-to-Point)</strong><br>
+                    连接对象数量只能是一对一，不支持广播或多播
+                </div>
+                <div class="feature-item">
+                    <strong>传输效率较低 (Lower Efficiency)</strong><br>
+                    相比UDP需要更多开销，但提供更高的可靠性保证
+                </div>
+            </div>
+        </div>
+
+        <h2>🤝 三次握手 (Three-Way Handshake)</h2>
+        <p><strong>目的</strong>：确保双方都确认自己的发送和接收能力，建立可靠连接</p>
+        
+        <div class="diagram-container">
+            <div class="mermaid">
+sequenceDiagram
+    participant "客户端<br/>Client" as Client
+    participant "服务器<br/>Server" as Server
+    
+    Note over Client: CLOSED状态<br/>准备发起连接
+    Note over Server: LISTEN状态<br/>等待连接请求
+    
+    Client->>Server: ①SYN=1, seq=x<br/>同步信号+随机序列号
+    Note over Client: SYN-SENT状态<br/>已发送同步请求
+    
+    Server->>Client: ②SYN=1, ACK=1<br/>seq=y, ack=x+1<br/>同步+确认信号
+    Note over Server: SYN-RCVD状态<br/>已接收并回复
+    
+    Client->>Server: ③ACK=1, ack=y+1<br/>确认信号
+    Note over Client: ESTABLISHED状态<br/>连接建立成功
+    Note over Server: ESTABLISHED状态<br/>连接建立成功
+    
+    Note over Client,Server: 🎉 连接建立完成，可以开始数据传输
+            </div>
+        </div>
+
+        <div class="step-explanation">
+            <h4>📋 三次握手详细步骤</h4>
+            <p><strong>第一次握手</strong>：客户端发送 <span class="signal-info">SYN=1</span> 同步信号，随机生成序列号 <span class="seq-info">seq=x</span>，进入 <span class="state-info">SYN-SENT</span> 状态</p>
+            <p><strong>第二次握手</strong>：服务器收到SYN后，回复 <span class="signal-info">SYN=1, ACK=1</span>，生成序列号 <span class="seq-info">seq=y</span>，确认号 <span class="seq-info">ack=x+1</span>，进入 <span class="state-info">SYN-RCVD</span> 状态</p>
+            <p><strong>第三次握手</strong>：客户端发送 <span class="signal-info">ACK=1</span>，确认号 <span class="seq-info">ack=y+1</span>，双方进入 <span class="state-info">ESTABLISHED</span> 状态，连接建立</p>
+        </div>
+
+        <h2>👋 四次挥手 (Four-Way Termination)</h2>
+        <p><strong>目的</strong>：安全地关闭连接，确保双方数据传输完毕</p>
+        
+        <div class="diagram-container">
+            <div class="mermaid">
+sequenceDiagram
+    participant "客户端<br/>Client" as Client
+    participant "服务器<br/>Server" as Server
+    
+    Note over Client,Server: ESTABLISHED状态<br/>正常数据传输中
+    
+    Client->>Server: ①FIN=1, seq=x<br/>结束信号+序列号
+    Note over Client: FIN-WAIT-1状态<br/>已发送结束请求
+    
+    Server->>Client: ②ACK=1, ack=x+1<br/>确认信号
+    Note over Server: CLOSE-WAIT状态<br/>准备关闭，可能还有数据
+    Note over Client: FIN-WAIT-2状态<br/>等待服务器结束信号
+    
+    Note over Server: 发送剩余数据...<br/>Sending remaining data...
+    
+    Server->>Client: ③FIN=1, seq=y<br/>结束信号+序列号
+    Note over Server: LAST-ACK状态<br/>等待最后确认
+    
+    Client->>Server: ④ACK=1, ack=y+1<br/>最终确认信号
+    Note over Client: TIME-WAIT状态<br/>等待2MSL后关闭
+    Note over Server: CLOSED状态<br/>连接关闭
+    
+    Note over Client: 等待2MSL后...<br/>After 2MSL timeout...
+    Note over Client: CLOSED状态<br/>连接完全关闭
+            </div>
+        </div>
+
+        <div class="step-explanation">
+            <h4>📋 四次挥手详细步骤</h4>
+            <p><strong>第一次挥手</strong>：客户端发送 <span class="signal-info">FIN=1</span> 结束信号，序列号 <span class="seq-info">seq=x</span>，进入 <span class="state-info">FIN-WAIT-1</span> 状态</p>
+            <p><strong>第二次挥手</strong>：服务器回复 <span class="signal-info">ACK=1</span>，确认号 <span class="seq-info">ack=x+1</span>，进入 <span class="state-info">CLOSE-WAIT</span> 状态，此时可能还有数据未发送完</p>
+            <p><strong>第三次挥手</strong>：服务器数据发送完毕后，发送 <span class="signal-info">FIN=1</span>，序列号 <span class="seq-info">seq=y</span>，进入 <span class="state-info">LAST-ACK</span> 状态</p>
+            <p><strong>第四次挥手</strong>：客户端发送 <span class="signal-info">ACK=1</span>，确认号 <span class="seq-info">ack=y+1</span>，进入 <span class="state-info">TIME-WAIT</span> 状态，等待2MSL后完全关闭</p>
+        </div>
+
+        <div class="tcp-intro">
+            <h3>🔍 关键概念解释 (Key Concepts)</h3>
+            <p><strong>SYN (Synchronize)</strong>：同步标志位，用于建立连接时的序列号同步</p>
+            <p><strong>ACK (Acknowledge)</strong>：确认标志位，用于确认收到的数据</p>
+            <p><strong>FIN (Finish)</strong>：结束标志位，用于关闭连接</p>
+            <p><strong>seq (Sequence Number)</strong>：序列号，标识数据的顺序</p>
+            <p><strong>ack (Acknowledgment Number)</strong>：确认号，表示期望收到的下一个序列号</p>
+            <p><strong>MSL (Maximum Segment Lifetime)</strong>：报文段最大生存时间，通常为2分钟</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            sequence: {
+                diagramMarginX: 50,
+                diagramMarginY: 10,
+                actorMargin: 50,
+                width: 150,
+                height: 65,
+                boxMargin: 10,
+                boxTextMargin: 5,
+                noteMargin: 10,
+                messageMargin: 35,
+                mirrorActors: false,
+                bottomMarginAdj: 1,
+                useMaxWidth: true,
+                rightAngles: false,
+                showSequenceNumbers: false
+            }
+        });
+    </script>
+</body>
+</html>
