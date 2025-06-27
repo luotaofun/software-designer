@@ -1,0 +1,102 @@
+{
+  "mcpServers": {
+    "server-sequential-thinking": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery-ai/server-sequential-thinking",
+        "--key",
+        "fb4d0ef8-da4b-4b93-8414-6a247749e4a6"
+      ]
+    },
+    "exa": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "exa",
+        "--key",
+        "fb4d0ef8-da4b-4b93-8414-6a247749e4a6"
+      ]
+    },
+    "desktop-commander": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@wonderwhy-er/desktop-commander",
+        "--key",
+        "fb4d0ef8-da4b-4b93-8414-6a247749e4a6"
+      ]
+    },
+    "context7-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@upstash/context7-mcp",
+        "--key",
+        "fb4d0ef8-da4b-4b93-8414-6a247749e4a6"
+      ]
+    },
+    "github": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery-ai/github",
+        "--key",
+        "fb4d0ef8-da4b-4b93-8414-6a247749e4a6",
+        "--profile",
+        "secret-guan-A0cSb9"
+      ]
+    },
+    "whimsical-mcp-server": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@BrockReece/whimsical-mcp-server",
+        "--key",
+        "fb4d0ef8-da4b-4b93-8414-6a247749e4a6"
+      ]
+    },
+    "mermaid-validator": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@rtuin/mcp-mermaid-validator"
+      ]
+    },
+    "mcp-server-chart": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@antv/mcp-server-chart"
+      ]
+    }
+  }
+}

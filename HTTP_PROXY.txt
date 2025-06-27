@@ -1,0 +1,3 @@
+Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
+
+$env:HTTP_PROXY = "http://127.0.0.1:7890"
